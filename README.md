@@ -1,2 +1,0 @@
-# jamal
-Jamal programming language
