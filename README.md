@@ -35,7 +35,7 @@
 
 ### Information
 
-the documentation is not written yet.
+The documentation is not written yet.
 It will be completed as progress is made.
 
 ### Issues
