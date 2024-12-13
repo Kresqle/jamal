@@ -4,8 +4,6 @@ Hopefully a future language. For the moment, it only is a lambda calculus interp
 
 ## Examples
 
-### Hello world
-
 ```ocaml
 #use "jamal.ml"
 
