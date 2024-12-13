@@ -17,13 +17,13 @@ type term =
 and env = (char * term) list
 
 (** A list of valid variable characters in the alphabet. *)
-let alphabet = "abcdefghijklmnopqrstuvwxyz" |> String.to_seq |> List.of_seq
+let alphabet : char list = "abcdefghijklmnopqrstuvwxyz" |> String.to_seq |> List.of_seq
 
 (**
   [tokenize text] converts a list of characters [text] into a list of tokens
   representing a lambda calculus expression. 
 *)
-let rec tokenize text =
+let rec tokenize (text : char list) : token list =
   match text with
   | [] -> []
   | '(' :: rest -> LParen :: tokenize rest
@@ -37,7 +37,7 @@ let rec tokenize text =
     [parse_single tokens] parses a single term from the list of tokens [tokens],
     returning the parsed term and the remaining tokens.
 *)
-let rec parse_single tokens =
+let rec parse_single (tokens : token list) : term * token list =
   match tokens with
   | Variable name :: rest -> (VariableT name, rest)
   | Lambda :: Variable arg :: Dot :: body_code ->
@@ -52,13 +52,13 @@ let rec parse_single tokens =
   | _ -> failwith "Error while parsing"
 
 (** [parse tokens] parses the entire list of tokens [tokens] into a term *)
-let parse tokens = parse_single tokens |> fst
+let parse (tokens : token list) : term = parse_single tokens |> fst
 
 (**
   [eval_in_env env term] evaluates a lambda calculus [term] within the given
   environment [env].
 *)
-let rec eval_in_env env term =
+let rec eval_in_env (env : env) (term : term) : term =
   match term with
   | VariableT name -> (
     match List.find_opt (fun (a_name, term) -> a_name = name) env with
@@ -78,13 +78,13 @@ let rec eval_in_env env term =
   | closure -> closure
 
 (** [eval term] evaluates a lambda calculus [term] in an empty environment. *)
-let eval term = eval_in_env [] term
+let eval (term : term) : term = eval_in_env [] term
 
 (**
   [pretty term] converts a lambda calculus [term] into a list of characters
   representing its string representation.
 *)
-let rec pretty term =
+let rec pretty (term : term) : char list =
   match term with
   | VariableT name -> [ name ]
   | LambdaT (arg, body) -> [ '\\' ; arg ; '.' ] @ pretty body
@@ -95,7 +95,7 @@ let rec pretty term =
   [interpreter characters] processes a list of characters [characters] by
   tokenizing, parsing, evaluating, and pretty-printing them.
 *)
-let interpreter characters =
+let interpreter (characters : char list) : char list =
   characters
   |> tokenize
   |> parse
@@ -106,7 +106,7 @@ let interpreter characters =
   [interpreter_string string_expr] processes a string [string_expr] by tokenizing,
   parsing, evaluating, and returning the result as a string.
 *)
-let interpreter_string string_expr =
+let interpreter_string (string_expr : string) : string =
   string_expr
   |> String.to_seq
   |> List.of_seq
