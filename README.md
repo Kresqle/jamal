@@ -4,7 +4,7 @@ Hopefully a future language. For the moment, it only is a lambda calculus interp
 
 ## Examples
 
-### Hello world
+### 1. Lambda calculus
 
 This example can be found (here)[./examples/lambda_calculus.ml].
 
